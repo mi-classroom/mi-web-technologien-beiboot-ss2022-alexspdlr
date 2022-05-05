@@ -1,0 +1,12 @@
+@import 'assets/styles/scss/abstracts/variables';
+
+body {
+  margin: 0;
+  font-family: $font-sans-serif; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: $font-code;
+}
