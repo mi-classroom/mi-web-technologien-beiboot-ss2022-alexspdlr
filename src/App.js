@@ -39,44 +39,53 @@ return squareBracketsRemoved
 
   return (
     <div className="App">
-      <div className="App-body">
+      <div className="App-body" >
         {bestOfs ? 
-        <>
-        {bestOfs.map(item => <div className="tile" key={item.metadata.id}>
-         <div className="previewContainer">
-          <img className="previewImage" src={item.images.overall.images[0].sizes.medium.src} alt={item.metadata.id} />
-         </div> 
-         <div className="h1" >
-         {item.metadata.title}, {item.metadata.date}
+   
+        <div className="listContainer"> 
+        {bestOfs.map(item => 
+        <div className="gridItem" key={item.metadata.id}>
+        <div className="tile" >
+          <div className="previewContainer">
+          <img className="previewImage" src={item.images.overall.images[0].sizes.medium.src} alt={item.metadata.title} />
+          </div> 
+          <div className="h1" >
+          {item.metadata.title}, {item.metadata.date}
+          </div>
+          <div className="h2" > 
+            {removeTextInBrackets(item.medium)}
           </div>
           <div className="h2" >
-         {removeTextInBrackets(item.medium)}
+          {item.repository}
           </div>
-             <div className="h2" >
-         {item.repository}
-          </div>
-
+        </div>
         </div>)}
-        </>
+        </div>
+
         :
         <>
         {loading ? 
         
-        <p > 
-        Loading ...
+        <p className="h1"> 
+        Bitte warten ...
       </p>
         :
         <>
 
         <p className="h1">  
-          Upload the target json file. 
+          Lade die benötigte JSON Datei hoch.
         </p>
 
         {bestOfs ? 
         <div >{JSON.stringify(bestOfs).slice(0, 10)}</div>
           :  
         <div> 
-          <input type="file" onChange={onFileChange} accept="application/JSON"/> 
+
+        <label class="uploadButton">
+    <input type="file" onChange={onFileChange} accept="application/JSON" /> 
+    Datei auswählen
+</label>
+
         </div> }</>
         
         }

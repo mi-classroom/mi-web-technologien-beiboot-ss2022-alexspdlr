@@ -20,7 +20,18 @@
 
 .tile {
   width: $tile-s;
-  margin: $xxl
+  margin: $xxl;
+}
+
+.listContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.gridItem {
+  display: flex;
+  justify-content: center;
 }
 
 .previewContainer {
@@ -45,6 +56,23 @@
   font-size: $xl; 
   font-weight: $fw-regular;
 }
+
+.uploadButton {
+  background-color: $accent;
+  display: inline-block;
+  padding: $xs $s;
+  cursor: pointer;
+  font-size: $m; 
+  font-weight: $fw-semibold;
+  &:hover {
+    background-color: $accent-dark;
+  }
+}
+
+input[type="file"] {
+  display: none;
+}
+
 
 
 @keyframes App-logo-spin {
