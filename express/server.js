@@ -20,11 +20,10 @@ app.use(express.static("public"));
 app.use((req, res, next) => {
 	res.sendFile(path.join(__dirname, "..", "build", "index.html"));
 });
-
-
+ 
 // start express server on port 9000
 app.listen(process.env.PORT || developmentPort, () => {
-	console.log(`server started on port ${process.env.PORT || developmentPort}`);
+	console.log(`Server started on port ${process.env.PORT || developmentPort}`);
 });
 
 /*
