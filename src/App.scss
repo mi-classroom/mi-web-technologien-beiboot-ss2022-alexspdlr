@@ -1,0 +1,85 @@
+@import 'assets/styles/scss/abstracts/variables';
+
+.App {
+  text-align: start;
+}
+
+.App-body {
+  background-color: $lightest;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: $dark;
+}
+
+.App-link {
+  color: $error;
+}
+
+.tile {
+  width: $tile-s;
+  margin-top: $bfs * 6;
+}
+
+.listContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.gridItem {
+  display: flex;
+  justify-content: center;
+}
+
+.previewContainer {
+  width: $tile-s;
+  height: $tile-s; 
+  background-color: $darken;
+  margin-bottom: $s;  
+}
+
+.previewImage {
+  object-fit: contain; 
+  width: $tile-s;
+  height: $tile-s; 
+}
+
+.h1 {
+  font-size: $xl; 
+  font-weight: $fw-bold;
+}
+
+.h2 {
+  font-size: $xl; 
+  font-weight: $fw-regular;
+}
+
+.uploadButton {
+  background-color: $accent;
+  display: inline-block;
+  padding: $xs $s;
+  cursor: pointer;
+  font-size: $m; 
+  font-weight: $fw-semibold;
+  &:hover {
+    background-color: $accent-dark;
+  }
+}
+
+input[type="file"] {
+  display: none;
+}
+
+
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

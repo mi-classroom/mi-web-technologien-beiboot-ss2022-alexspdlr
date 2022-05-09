@@ -7,7 +7,7 @@ i.icon {
   direction: ltr;
   font-family: $font-icons;
   font-feature-settings: 'liga';
-  font-size: 24px;  /* Preferred icon size */
+  font-size: 24px; /* Preferred icon size */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
@@ -20,14 +20,30 @@ i.icon {
   white-space: nowrap;
   word-wrap: normal;
 
-  &.i12::before { font-size: 12px !important; }
-  &.i14::before { font-size: 14px !important; }
-  &.i18::before { font-size: 18px !important; }
-  &.i24::before { font-size: 24px !important; }
-  &.i36::before { font-size: 36px !important; }
-  &.i48::before { font-size: 48px !important; }
-  &::before { content: attr(data-icon); }
-  &.red { color: red; }
+  &.i12::before {
+    font-size: 12px !important;
+  }
+  &.i14::before {
+    font-size: 14px !important;
+  }
+  &.i18::before {
+    font-size: 18px !important;
+  }
+  &.i24::before {
+    font-size: 24px !important;
+  }
+  &.i36::before {
+    font-size: 36px !important;
+  }
+  &.i48::before {
+    font-size: 48px !important;
+  }
+  &::before {
+    content: attr(data-icon);
+  }
+  &.red {
+    color: red;
+  }
 }
 
 //.icon Font Awesome Extend
@@ -36,7 +52,7 @@ i.icon {
   text-transform: none;
 }
 
-[data-filetype=pdf] {
+[data-filetype='pdf'] {
   display: inline-block;
   width: 24px;
   height: 24px;

@@ -1,13 +1,15 @@
+@use 'sass:math';
+
 /* Farben
 ---------------------------------------------------------------------------- */
-
+ 
 $medium: #666;
 $dark: #444;
 $darker: #222;
 $darkest: #000;
 $light: #b4b4b4;
 $lighter: #f2f2f2;
-$lightest:#fff;
+$lightest: #fff;
 $lighten: rgba(255, 255, 255, 0.06);
 $lighten-strong: rgba(255, 255, 255, 0.2);
 $accent: #fc0;
@@ -17,7 +19,6 @@ $darken: rgba(0, 0, 0, 0.06);
 $darken-medium: rgba(0, 0, 0, 0.1);
 $darken-strong: rgba(0, 0, 0, 0.6);
 $darken-strongest: rgba(0, 0, 0, 0.8);
-
 
 /* Viewports
 ---------------------------------------------------------------------------- */
@@ -75,9 +76,10 @@ $term-width-large: $m * 16;
 /* Schriften
 ---------------------------------------------------------------------------- */
 
-$font-sans-serif: "IBMPlexSans", sans-serif;
+$font-sans-serif: 'IBM Plex Sans', sans-serif;
 $font-icons: 'MaterialIcons';
-$font-code: menlo, consolas, "Courier New", courier, "Liberation Mono", monospace;
+$font-code: 'Menlo', sans-serif, consolas, 'Courier New', courier, 'Liberation Mono',
+  monospace;
 
 /* Schriftgewichte
 ---------------------------------------------------------------------------- */
