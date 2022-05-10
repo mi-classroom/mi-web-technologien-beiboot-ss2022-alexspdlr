@@ -11,4 +11,8 @@ Als organisatorischen Rahmen für das Projekt nutzen wir GitHub Classroom. Inhal
 https://enigmatic-mesa-04037.herokuapp.com/
 
 
-## Repository gehört: Alexander Spindeler
+## Sonstiges
+
+Repository gehört: Alexander Spindeler
+
+Aktueller Code befindet sich im "main" branch.
