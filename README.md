@@ -9,3 +9,6 @@ Als organisatorischen Rahmen für das Projekt nutzen wir GitHub Classroom. Inhal
 ## Gehostete Anwendung (Username & Passwort -> wie in Issue #1 spezifiziert):
 
 https://enigmatic-mesa-04037.herokuapp.com/
+
+
+## Repository gehört: Alexander Spindeler
