@@ -17,8 +17,10 @@ https://enigmatic-mesa-04037.herokuapp.com/
 3. Über das Terminal `docker run --publish 9000:9000 beiboot-alexspdlr` in der "root-folder" laufen lassen
 4. Projekt im Browser unter `http://localhost:9000/` aufrufen
 
-## Sonstiges
+## Team
+Author: __Alexander Spindeler__  
+Reviewer: __Linnéa Doberstein__
 
-Repository gehört: Alexander Spindeler
+## Sonstiges
 
 Aktueller Code befindet sich im "main" branch.
