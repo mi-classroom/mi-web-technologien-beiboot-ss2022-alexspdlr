@@ -15,7 +15,7 @@ https://enigmatic-mesa-04037.herokuapp.com/
 1. start Docker
 2. run `docker image build --tag beiboot-alexspdlr .` in the root folder via the terminal to create the Docker image
 3. run `docker run --publish 9000:9000 beiboot-alexspdlr` in the root folder via the terminal to run the container
-4. access th project in the browser under `http://localhost:9000/`
+4. access the project in the browser under `http://localhost:9000/`
 5.  stop the Docker container inside the Docker App under the `Containers` tab via the `Stop` button or alternatively kill it it by clicking the `Delete` button
 
 ## Team
