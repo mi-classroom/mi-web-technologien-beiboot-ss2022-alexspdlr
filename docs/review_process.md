@@ -12,8 +12,10 @@ The **[Feature Branch](https://www.atlassian.com/git/tutorials/comparing-workflo
      - Add title: _Issue Number - short description_ e.g.: `Issue 2 - Review Process`
      - Add description: _short description of what was done in this PR_
      - Add Reviewers: ?
+     - Add Reviewers: Linnéa Doberstein
      - _Create pull request_
-2. Move issue to review column
-3. Reviewer adds comments/ suggestions/ declines or approves the PR
-4. If a request to improve exists, it will be implemented by the author
-5. Once approved, the PR can be **squash merged** (after rebasing if nesseccary)
+2. Reviewer adds comments/ suggestions/ declines or approves the PR
+3. If a request to improve exists, it will be implemented by the author
+4. Once approved, the PR can be **squash merged** (after rebasing if nesseccary)
+
+Note: Any ambiguities or open questions that cannot be resolved during the review process will be discussed in a joint Discord group.

@@ -16,10 +16,12 @@ https://enigmatic-mesa-04037.herokuapp.com/
 2. Über das Terminal `docker image build --tag beiboot-alexspdlr .` in der "root-folder" laufen lassen
 3. Über das Terminal `docker run --publish 9000:9000 beiboot-alexspdlr` in der "root-folder" laufen lassen
 4. Projekt im Browser unter `http://localhost:9000/` aufrufen
+5. Docker Container in der Docker App unter dem Reiter `Containers` über den Button `Stop` stoppen oder über den Button `Delete` löschen
 
 ## Team
-Author: __Alexander Spindeler__  
-Reviewer: __Linnéa Doberstein__
+
+Author: **Alexander Spindeler**  
+Reviewer: **Linnéa Doberstein**
 
 ## Sonstiges
 
