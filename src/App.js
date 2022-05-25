@@ -67,7 +67,13 @@ function App() {
   return (
     <div className='App'>
       <div className='App-body'>
-        {bestOfs ? (
+        <Canvas>
+          <ambientLight />
+          <pointLight position={[10, 10, 10]} />
+          <Box position={[-1.2, 0, 0]} />
+          <Box position={[1.2, 0, 0]} />
+        </Canvas>
+        {/*bestOfs ? (
           <div className='listContainer'>
             {bestOfs.map((item) => (
               <div className='gridItem' key={item.metadata.id}>
@@ -87,12 +93,6 @@ function App() {
                 </div>
               </div>
             ))}
-            <Canvas>
-              <ambientLight />
-              <pointLight position={[10, 10, 10]} />
-              <Box position={[-1.2, 0, 0]} />
-              <Box position={[1.2, 0, 0]} />
-            </Canvas>
           </div>
         ) : (
           <>
@@ -119,7 +119,7 @@ function App() {
               </>
             )}
           </>
-        )}
+        )*/}
       </div>
     </div>
   );
