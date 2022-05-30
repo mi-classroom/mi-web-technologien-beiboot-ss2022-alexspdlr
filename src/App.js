@@ -6,6 +6,7 @@ import './App.scss';
 import './assets/styles/scss/abstracts/variables.scss';
 import { Ground } from './Ground';
 import { Player } from './Player';
+import { Timeline } from './Timeline';
 
 import * as THREE from 'three';
 
@@ -165,6 +166,11 @@ function App() {
                 scene.background = new THREE.Color('#ffffff');
               }}
             >
+              <Timeline
+                startDate={bestOfs[0].sortingInfo.year}
+                endDate={bestOfs[bestOfs.length - 1].sortingInfo.year}
+                stepSize={stepSize}
+              />
               <Physics>
                 <Ground />
                 <Player />
