@@ -2,6 +2,7 @@
   "name": "mi-web-technologien-beiboot-ss2022-alexspdlr",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:9000",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
@@ -10,10 +11,17 @@
     "react-dom": "^18.1.0",
     "react-scripts": "5.0.1",
     "sass": "^1.51.0",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@types/node": "^16.11.33",
+		"@types/react": "^18.0.8",
+		"express-basic-auth": "^1.2.1",
+		"fs": "^0.0.1-security",
+		"http-auth": "^4.1.9",
+		"nodemon": "^2.0.16",
+		"typescript": "^4.6.4"
   },
   "scripts": {
-		"start": "npm run build && (cd express && npm start)",
+		"start": "cd express && node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -37,4 +45,4 @@
       "last 1 safari version"
     ]
   }
-}
+} 
