@@ -1,35 +1,81 @@
+import { Physics } from '@react-three/cannon';
+import { PointerLockControls, Sky } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { useRef, useState, useEffect } from 'react';
 import './App.scss';
 import './assets/styles/scss/abstracts/variables.scss';
-import { useState, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
 
-function Box(props) {
-  // This reference will give us direct access to the mesh
-  const mesh = useRef();
-  // Set up state for the hovered and active state
-  const [hovered, setHover] = useState(false);
-  const [active, setActive] = useState(false);
-  // Subscribe this component to the render-loop, rotate the mesh every frame
-  useFrame((state, delta) => (mesh.current.rotation.x += 0.01));
-  // Return view, these are regular three.js elements expressed in JSX
-  return (
-    <mesh
-      {...props}
-      ref={mesh}
-      scale={active ? 1.5 : 1}
-      onClick={(event) => setActive(!active)}
-      onPointerOver={(event) => setHover(true)}
-      onPointerOut={(event) => setHover(false)}
-    >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
-    </mesh>
+import * as THREE from 'three';
+
+const groupByYear = (items) =>
+  items.reduce((groups, item) => {
+    const group = groups[item.sortingInfo.year] || [];
+    group.push(item);
+    groups[item.sortingInfo.year] = group;
+    return groups;
+  }, {});
+
+const calculateHeight = (item) => {
+  const split = item.dimensions.replace(/[\])}[{(]/g, ' ').split(' ');
+  const scalingFactor = 1 / 1.8;
+  const splitWithoutCM = split.filter(
+    (string) => string !== 'cm' && string !== ''
   );
-}
+
+  let size;
+  let sideMeasured;
+
+  for (const string of splitWithoutCM) {
+    const stringSlicedAtDash = string.split('-')[0];
+
+    if (!size) {
+      if (/\d/.test(stringSlicedAtDash)) {
+        size = parseFloat(stringSlicedAtDash.replace(/,/g, '.'));
+      }
+    } else {
+      sideMeasured = stringSlicedAtDash;
+
+      break;
+    }
+  }
+
+  switch (sideMeasured) {
+    case 'oben':
+      size =
+        (size / item.images.overall.images[0].sizes.medium.dimensions.width) *
+        item.images.overall.images[0].sizes.medium.dimensions.height;
+
+      break;
+    case 'Durchmesser':
+      const scaledDiameter = Math.sqrt(
+        Math.pow(
+          item.images.overall.images[0].sizes.medium.dimensions.width,
+          2
+        ) +
+          Math.pow(
+            item.images.overall.images[0].sizes.medium.dimensions.height,
+            2
+          )
+      );
+
+      const scalingFactor = size / scaledDiameter;
+
+      size =
+        item.images.overall.images[0].sizes.medium.dimensions.height *
+        scalingFactor;
+
+      break;
+    default:
+      break;
+  }
+
+  return (size / 100) * scalingFactor;
+};
 
 function App() {
   const [bestOfs, setBestOfs] = useState(null);
   const [loading, setLoading] = useState(false);
+  const stepSize = 4;
 
   const onFileChange = (event) => {
     setLoading(true);
@@ -53,7 +99,6 @@ function App() {
           : 0
       );
       setBestOfs(filteredItemsSorted);
-      console.log(filteredItemsSorted);
       setLoading(false);
     });
   };
@@ -64,36 +109,63 @@ function App() {
     return squareBracketsRemoved;
   };
 
+  const UI = ({ children }) => {
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          zIndex: 100,
+        }}
+      >
+        {children}
+      </div>
+    );
+  };
+
+  const Crosshair = () => {
+    return (
+      <div
+        style={{
+          height: '4px',
+          width: '4px',
+          backgroundColor: 'white',
+          borderRadius: '50%',
+          border: '0.5px solid black',
+          margin: 'auto',
+        }}
+      />
+    );
+  };
+
   return (
     <div className='App'>
       <div className='App-body'>
-        <Canvas>
-          <ambientLight />
-          <pointLight position={[10, 10, 10]} />
-          <Box position={[-1.2, 0, 0]} />
-          <Box position={[1.2, 0, 0]} />
-        </Canvas>
-        {/*bestOfs ? (
-          <div className='listContainer'>
-            {bestOfs.map((item) => (
-              <div className='gridItem' key={item.metadata.id}>
-                <div className='tile'>
-                  <div className='previewContainer'>
-                    <img
-                      className='previewImage'
-                      src={item.images.overall.images[0].sizes.medium.src}
-                      alt={item.metadata.title}
-                    />
-                  </div>
-                  <div className='h1'>
-                    {item.metadata.title}, {item.metadata.date}
-                  </div>
-                  <div className='h2'>{removeTextInBrackets(item.medium)}</div>
-                  <div className='h2'>{item.repository}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+        {bestOfs ? (
+          <>
+            <UI>
+              <Crosshair />
+            </UI>
+            <Canvas
+              shadows
+              pixelRatio={window.devicePixelRatio}
+              gl={{ alpha: false }}
+              camera={{ fov: 75 }}
+              style={{
+                width: '100vw',
+                height: '100vh',
+              }}
+              onCreated={({ gl, scene }) => {
+                scene.background = new THREE.Color('#ffffff');
+              }}
+            >
+              <PointerLockControls />
+            </Canvas>
+          </>
         ) : (
           <>
             {loading ? (
@@ -119,7 +191,7 @@ function App() {
               </>
             )}
           </>
-        )*/}
+        )}
       </div>
     </div>
   );
