@@ -5,24 +5,13 @@ import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import IBMPlexSans from './assets/IBM Plex Sans_Regular.json';
 import Line from './Line';
 
-const Sphere = ({ x, y, z }) => {
-  return (
-    <mesh position={[x, y, z]}>
-      <boxBufferGeometry attach='geometry' args={[4, 1, 1]} />
-      <meshStandardMaterial attach='material' />
-      <boxGeometry args={[0.01, 0.01, 0.01]} />
-      <meshStandardMaterial color={'#000'} />
-    </mesh>
-  );
-};
-
 const Text = ({ x, y, z, content }) => {
   extend({ TextGeometry });
   return (
     <mesh position={[x, y, z]}>
-      <Text3D font={IBMPlexSans} size={0.04} height={0.001}>
+      <Text3D font={IBMPlexSans} size={0.05} height={0.002}>
         {content}
-        <meshStandardMaterial color={'#000'} />
+        <meshStandardMaterial color={'#000000'} />
       </Text3D>
     </mesh>
   );
@@ -33,35 +22,36 @@ export const Timeline = ({ startDate, endDate, stepSize }) => {
   const height = 0.95;
 
   return (
-    <>
+    <group>
       <Line
-        points={[
-          [-1, 0, 0],
-          [-1, 0, -length],
-        ]}
+        start={[-1, 0, 0]}
+        end={[-1, 0, -length]}
         linewidth={0.5}
-        color='#000'
+        color='#000000'
       />
       {[...Array(length).keys()].map((number, index) => (
-        <>
+        <group>
           <Line
-            points={[
-              [-1.025, height, -number * stepSize],
-              [-1, height, -number * stepSize],
-              [-1, 0, -number * stepSize],
-            ]}
+            start={[-1, height, -number * stepSize]}
+            end={[-1, 0, -number * stepSize]}
             linewidth={0.5}
-            color='#000'
+            color='#000000'
+          />
+          <Line
+            start={[-1, height, -number * stepSize]}
+            end={[-1.05, height, -number * stepSize]}
+            linewidth={0.5}
+            color='#000000'
           />
 
           <Text
-            x={-1.2}
-            y={height}
+            x={-1.25}
+            y={height - 0.025}
             z={-number * stepSize}
             content={parseInt(startDate) + number}
           />
-        </>
+        </group>
       ))}
-    </>
+    </group>
   );
 };

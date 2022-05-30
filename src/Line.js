@@ -1,16 +1,90 @@
 import * as THREE from 'three';
 import { useRef, useState, useLayoutEffect } from 'react';
-import { Line } from '@react-three/drei';
+import { Box, Tube } from '@react-three/drei';
+import { useFrame, useThree } from '@react-three/fiber';
 
-const CustomLine = ({ points, color, linewidth, opacity }) => {
+function CustomLine({ color, start, end, opacity, linewidth }) {
+  linewidth = 0.0075;
+
+  function calcLength(start, end) {
+    return end - start;
+  }
+
+  function calcDimensions() {
+    if (start[0] > end[0]) {
+      const length = calcLength(start[0], end[0]);
+      return {
+        size: [length, linewidth, linewidth],
+        position: [start[0] + length / 2, start[1], start[2]],
+      };
+    }
+
+    if (start[0] < end[0]) {
+      const length = calcLength(start[0], end[0]);
+
+      return {
+        size: [length, linewidth, linewidth],
+        position: [start[0] - length / 2, start[1], start[2]],
+      };
+    }
+
+    if (start[1] > end[1]) {
+      const length = calcLength(start[1], end[1]);
+      return {
+        size: [linewidth, length, linewidth],
+        position: [start[0], start[1] + length / 2, start[2]],
+      };
+    }
+
+    if (start[1] < end[1]) {
+      const length = calcLength(start[1], end[1]);
+      return {
+        size: [linewidth, length, linewidth],
+        position: [start[0], start[1] - length / 2, start[2]],
+      };
+    }
+
+    if (start[2] > end[2]) {
+      const length = calcLength(start[2], end[2]);
+      return {
+        size: [linewidth, linewidth, length],
+        position: [start[0], start[1], start[2] + length / 2],
+      };
+    }
+
+    if (start[2] < end[2]) {
+      const length = calcLength(start[2], end[2]);
+      return {
+        size: [linewidth, linewidth, length],
+        position: [start[0], start[1], start[2] - length / 2],
+      };
+    }
+
+    return {
+      size: [linewidth, linewidth, linewidth],
+      position: [start[0], start[1], start[2]],
+    };
+  }
+
+  const dimensions = calcDimensions();
+  const { size, position } = dimensions;
+
+  const adjustedPosition =
+    position[1] === 0
+      ? [position[0], position[1] + linewidth / 1.9, position[2]]
+      : position;
+
   return (
-    <Line
-      points={points}
+    <Box
+      position={adjustedPosition}
+      args={size}
       color={color}
       lineWidth={0.25}
       opacity={opacity || 0.2}
-    />
+    >
+      <meshBasicMaterial color='black' />
+    </Box>
   );
-};
+}
 
 export default CustomLine;

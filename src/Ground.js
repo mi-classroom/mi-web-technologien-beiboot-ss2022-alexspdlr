@@ -5,7 +5,7 @@ import Line from './Line';
 
 export const Ground = ({ stepSize }) => {
   const [ref] = usePlane(() => ({ rotation: [-Math.PI / 2, 0, 0] }));
-  const lineAmount = 20;
+
   return (
     <>
       <mesh ref={ref} receiveShadow>

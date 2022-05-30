@@ -6,8 +6,9 @@ import './App.scss';
 import './assets/styles/scss/abstracts/variables.scss';
 import { Ground } from './Ground';
 import { Player } from './Player';
+import { Painting } from './Painting';
 import { Timeline } from './Timeline';
-
+import Line from './Line';
 import * as THREE from 'three';
 
 const groupByYear = (items) =>
@@ -156,7 +157,7 @@ function App() {
             <Canvas
               shadows
               pixelRatio={window.devicePixelRatio}
-              gl={{ alpha: false }}
+              gl={{ alpha: false, antialias: true }}
               camera={{ fov: 75 }}
               style={{
                 width: '100vw',
@@ -166,12 +167,45 @@ function App() {
                 scene.background = new THREE.Color('#ffffff');
               }}
             >
-              <Timeline
-                startDate={bestOfs[0].sortingInfo.year}
-                endDate={bestOfs[bestOfs.length - 1].sortingInfo.year}
-                stepSize={stepSize}
-              />
               <Physics>
+                {Object.entries(groupByYear(bestOfs)).map(([year, group]) => (
+                  <>
+                    {group.map((item, groupIndex) => (
+                      <Painting
+                        stepSize={stepSize}
+                        year={year}
+                        indentation={groupIndex * 2}
+                        url={item.images.overall.images[0].sizes.medium.src}
+                        height={calculateHeight(item)}
+                        aspectRatio={
+                          item.images.overall.images[0].sizes.medium
+                            ? item.images.overall.images[0].sizes.medium
+                                .dimensions.width /
+                              item.images.overall.images[0].sizes.medium
+                                .dimensions.height
+                            : 1
+                        }
+                      />
+                    ))}
+                    <Line
+                      start={[
+                        group.length * 2 - 1,
+                        0,
+                        -(year - 1501) * stepSize,
+                      ]}
+                      end={[-1, 0, -(year - 1501) * stepSize]}
+                      linewidth={0.5}
+                      color='#000000'
+                    />
+                  </>
+                ))}
+
+                <Timeline
+                  startDate={bestOfs[0].sortingInfo.year}
+                  endDate={bestOfs[bestOfs.length - 1].sortingInfo.year}
+                  stepSize={stepSize}
+                />
+
                 <Ground />
                 <Player />
               </Physics>
@@ -186,20 +220,16 @@ function App() {
               <>
                 <p className='h1'>Lade die benötigte JSON Datei hoch.</p>
 
-                {bestOfs ? (
-                  <div>{JSON.stringify(bestOfs).slice(0, 10)}</div>
-                ) : (
-                  <div>
-                    <label class='uploadButton'>
-                      <input
-                        type='file'
-                        onChange={onFileChange}
-                        accept='application/JSON'
-                      />
-                      Datei auswählen
-                    </label>
-                  </div>
-                )}
+                <div>
+                  <label class='uploadButton'>
+                    <input
+                      type='file'
+                      onChange={onFileChange}
+                      accept='application/JSON'
+                    />
+                    Datei auswählen
+                  </label>
+                </div>
               </>
             )}
           </>
