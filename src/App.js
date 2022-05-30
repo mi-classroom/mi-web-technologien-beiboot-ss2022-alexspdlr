@@ -4,6 +4,8 @@ import { Canvas } from '@react-three/fiber';
 import { useRef, useState, useEffect } from 'react';
 import './App.scss';
 import './assets/styles/scss/abstracts/variables.scss';
+import { Ground } from './Ground';
+import { Player } from './Player';
 
 import * as THREE from 'three';
 
@@ -163,6 +165,10 @@ function App() {
                 scene.background = new THREE.Color('#ffffff');
               }}
             >
+              <Physics>
+                <Ground />
+                <Player />
+              </Physics>
               <PointerLockControls />
             </Canvas>
           </>
