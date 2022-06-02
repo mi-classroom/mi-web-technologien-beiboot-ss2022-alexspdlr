@@ -9,7 +9,7 @@ const Text = ({ x, y, z, content }) => {
   extend({ TextGeometry });
   return (
     <mesh position={[x, y, z]}>
-      <Text3D font={IBMPlexSans} size={0.05} height={0.002}>
+      <Text3D font={IBMPlexSans} size={0.05} height={0.005}>
         {content}
         <meshStandardMaterial color={'#000000'} />
       </Text3D>

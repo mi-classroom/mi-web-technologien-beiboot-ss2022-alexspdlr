@@ -75,14 +75,8 @@ function CustomLine({ color, start, end, opacity, linewidth }) {
       : position;
 
   return (
-    <Box
-      position={adjustedPosition}
-      args={size}
-      color={color}
-      lineWidth={0.25}
-      opacity={opacity || 0.2}
-    >
-      <meshBasicMaterial color='black' />
+    <Box position={adjustedPosition} args={size}>
+      <meshBasicMaterial color={color} />
     </Box>
   );
 }
