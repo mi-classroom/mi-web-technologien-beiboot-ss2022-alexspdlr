@@ -10,6 +10,7 @@ import { Painting } from './Painting';
 import { Timeline } from './Timeline';
 import Line from './Line';
 import * as THREE from 'three';
+import colors from './assets/styles/scss/abstracts/variables.scss';
 
 const groupByYear = (items) =>
   items.reduce((groups, item) => {
@@ -78,8 +79,23 @@ const calculateHeight = (item) => {
 
 function App() {
   const [bestOfs, setBestOfs] = useState(null);
+  const [focusedPainting, setFocusedPainting] = useState(null);
   const [loading, setLoading] = useState(false);
   const stepSize = 4;
+
+  const paintingInfo = () => {
+    const painting = bestOfs.find(
+      (painting) => painting.images.overall.images[0].id === focusedPainting.id
+    );
+
+    return {
+      title: painting.metadata.title,
+      date: painting.sortingInfo.year,
+      artist: painting.involvedPersons[0].name,
+      medium: removeTextInBrackets(painting.medium),
+      owner: painting.repository,
+    };
+  };
 
   const onFileChange = (event) => {
     setLoading(true);
@@ -148,6 +164,18 @@ function App() {
 
   return (
     <div className='App'>
+      {focusedPainting && (
+        <div className='overlay'>
+          <div className='h1'>{paintingInfo().title} </div>
+          <div className='h2'>
+            {paintingInfo().artist}
+            <br />
+            {paintingInfo().medium}
+            <br />
+            {paintingInfo().owner}
+          </div>
+        </div>
+      )}
       <div className='App-body'>
         {bestOfs ? (
           <>
@@ -164,7 +192,7 @@ function App() {
                 height: '100vh',
               }}
               onCreated={({ gl, scene }) => {
-                scene.background = new THREE.Color('#ffffff');
+                scene.background = new THREE.Color(colors.medium);
               }}
             >
               <Physics>
@@ -185,6 +213,9 @@ function App() {
                                 .dimensions.height
                             : 1
                         }
+                        id={item.images.overall.images[0].id}
+                        focusedPainting={focusedPainting}
+                        setFocusedPainting={setFocusedPainting}
                       />
                     ))}
                     <Line

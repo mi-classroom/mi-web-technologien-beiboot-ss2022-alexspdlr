@@ -2,9 +2,11 @@ import * as THREE from 'three';
 import { useRef, useState, useLayoutEffect } from 'react';
 import { Box, Tube } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
+import colors from './assets/styles/scss/abstracts/variables.scss';
 
-function CustomLine({ color, start, end, opacity, linewidth }) {
-  linewidth = 0.0075;
+function CustomLine({ start, end }) {
+  const linewidth = 0.0075;
+  const color = colors.dark;
 
   function calcLength(start, end) {
     return end - start;

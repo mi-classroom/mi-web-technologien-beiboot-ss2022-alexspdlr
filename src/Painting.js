@@ -1,9 +1,11 @@
 import { Physics } from '@react-three/cannon';
-import { PointerLockControls, Sky, Image } from '@react-three/drei';
+import { PointerLockControls, Sky, Image, SpotLight } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { useRef, useState, useEffect } from 'react';
 import { DoubleSide } from 'three';
 import Line from './Line';
+import colors from './assets/styles/scss/abstracts/variables.scss';
+
 const useProxy = (text) => {
   const split = text.split('imageserver-2022/');
   return 'https://lucascranach.org/data-proxy/image.php?subpath=/' + split[1];
@@ -16,6 +18,9 @@ export const Painting = ({
   aspectRatio,
   indentation,
   stepSize,
+  id,
+  focusedPainting,
+  setFocusedPainting,
 }) => {
   // This reference will give us direct access to the mesh
   const mesh = useRef();
@@ -32,8 +37,22 @@ export const Painting = ({
         <mesh
           position={[indentation, 0, 0]}
           ref={mesh}
-          onPointerOver={(event) => console.log('hoevr in')}
-          onPointerOut={(event) => console.log('hoevr out')}
+          onPointerOver={(event) => {
+            if (
+              event.distance < 7 &&
+              (!focusedPainting || focusedPainting?.distance > event.distance)
+            ) {
+              setFocusedPainting({
+                id,
+                distance: event.distance,
+              });
+            }
+          }}
+          onPointerOut={(event) => {
+            if (focusedPainting?.id === id) {
+              setFocusedPainting(null);
+            }
+          }}
         >
           <boxBufferGeometry attach='geometry' args={[4, 1, 1]} />
           <meshStandardMaterial attach='material' />
@@ -44,24 +63,16 @@ export const Painting = ({
               depth,
             ]}
           />
-          <meshStandardMaterial color={'#000000'} />
+          <meshBasicMaterial color={colors.darkest} />
         </mesh>
         <mesh
           position={[indentation, 0, depth / 2 + 0.001]}
           rotation={[0, 0, 0]}
           scale={[width + passepartoutSize, height + passepartoutSize, 1]}
         >
-          {/*
-  The thing that gives the mesh its shape
-  In this case the shape is a flat plane
-*/}
           <planeBufferGeometry />
-          {/*
-  The material gives a mesh its texture or look.
-  In this case, it is just a uniform green
-*/}
           <meshBasicMaterial
-            color='#f2f2f0'
+            color={colors.lightest}
             toneMapped={false}
             side={DoubleSide}
           />
@@ -77,7 +88,6 @@ export const Painting = ({
         start={[indentation + 1, offsetY, -(year - 1501) * stepSize]}
         end={[indentation + 1, 0, -(year - 1501) * stepSize]}
         linewidth={0.5}
-        color='#000'
       />
     </group>
   );

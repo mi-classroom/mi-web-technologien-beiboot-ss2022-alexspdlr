@@ -4,6 +4,7 @@ import React from 'react';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import IBMPlexSans from './assets/IBM Plex Sans_Regular.json';
 import Line from './Line';
+import colors from './assets/styles/scss/abstracts/variables.scss';
 
 const Text = ({ x, y, z, content }) => {
   extend({ TextGeometry });
@@ -11,7 +12,7 @@ const Text = ({ x, y, z, content }) => {
     <mesh position={[x, y, z]}>
       <Text3D font={IBMPlexSans} size={0.05} height={0.005}>
         {content}
-        <meshStandardMaterial color={'#000000'} />
+        <meshBasicMaterial color={colors.lightest} />
       </Text3D>
     </mesh>
   );
@@ -23,25 +24,18 @@ export const Timeline = ({ startDate, endDate, stepSize }) => {
 
   return (
     <group>
-      <Line
-        start={[-1, 0, 0]}
-        end={[-1, 0, -length]}
-        linewidth={0.5}
-        color='#000000'
-      />
-      {[...Array(length).keys()].map((number, index) => (
+      <Line start={[-1, 0, 0]} end={[-1, 0, -length]} linewidth={0.5} />
+      {[...Array(length / stepSize + 1).keys()].map((number, index) => (
         <group>
           <Line
             start={[-1, height, -number * stepSize]}
             end={[-1, 0, -number * stepSize]}
             linewidth={0.5}
-            color='#000000'
           />
           <Line
             start={[-1, height, -number * stepSize]}
             end={[-1.05, height, -number * stepSize]}
             linewidth={0.5}
-            color='#000000'
           />
 
           <Text

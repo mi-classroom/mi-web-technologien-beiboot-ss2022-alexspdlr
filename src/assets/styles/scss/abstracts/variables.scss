@@ -2,7 +2,7 @@
 
 /* Farben
 ---------------------------------------------------------------------------- */
- 
+
 $medium: #666;
 $dark: #444;
 $darker: #222;
@@ -78,8 +78,8 @@ $term-width-large: $m * 16;
 
 $font-sans-serif: 'IBM Plex Sans', sans-serif;
 $font-icons: 'MaterialIcons';
-$font-code: 'Menlo', sans-serif, consolas, 'Courier New', courier, 'Liberation Mono',
-  monospace;
+$font-code: 'Menlo', sans-serif, consolas, 'Courier New', courier,
+  'Liberation Mono', monospace;
 
 /* Schriftgewichte
 ---------------------------------------------------------------------------- */
@@ -172,4 +172,17 @@ $radius-m: 5px;
     --responsive-padding-bottom-inner: #{$xxl};
     --responsive-gap: #{$xxl};
   }
+}
+
+:export {
+  accent: $accent;
+  accentdark: $accent-dark;
+  error: $error;
+  medium: $medium;
+  dark: $dark;
+  darker: $darker;
+  darkest: $darkest;
+  light: $light;
+  lighter: $lighter;
+  lightest: $lightest;
 }
