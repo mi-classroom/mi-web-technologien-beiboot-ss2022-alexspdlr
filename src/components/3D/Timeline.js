@@ -2,9 +2,9 @@ import { Text3D } from '@react-three/drei';
 import { extend } from '@react-three/fiber';
 import React from 'react';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
-import IBMPlexSans from './assets/IBM Plex Sans_Regular.json';
+import IBMPlexSans from '../../assets/IBM Plex Sans_Regular.json';
+import colors from '../../assets/styles/scss/abstracts/variables.scss';
 import Line from './Line';
-import colors from './assets/styles/scss/abstracts/variables.scss';
 
 const Text = ({ x, y, z, content }) => {
   extend({ TextGeometry });

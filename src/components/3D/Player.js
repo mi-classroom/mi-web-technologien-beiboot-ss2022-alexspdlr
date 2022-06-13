@@ -14,7 +14,6 @@ const moveFieldByKey = (key) => keys[key];
 const direction = new THREE.Vector3();
 const frontVector = new THREE.Vector3();
 const sideVector = new THREE.Vector3();
-const rotation = new THREE.Vector3();
 const speed = new THREE.Vector3();
 
 const usePlayerControls = () => {
@@ -49,6 +48,7 @@ export const Player = (props) => {
   const { forward, backward, left, right } = usePlayerControls();
   const { camera } = useThree();
   const velocity = useRef([0, 0, 0]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => api.velocity.subscribe((v) => (velocity.current = v)), []);
   useFrame((state) => {
     ref.current.getWorldPosition(camera.position);

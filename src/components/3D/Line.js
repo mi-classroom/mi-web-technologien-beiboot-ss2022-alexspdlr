@@ -1,8 +1,5 @@
-import * as THREE from 'three';
-import { useRef, useState, useLayoutEffect } from 'react';
-import { Box, Tube } from '@react-three/drei';
-import { useFrame, useThree } from '@react-three/fiber';
-import colors from './assets/styles/scss/abstracts/variables.scss';
+import { Box } from '@react-three/drei';
+import colors from '../../assets/styles/scss/abstracts/variables.scss';
 
 function CustomLine({ start, end }) {
   const linewidth = 0.0075;

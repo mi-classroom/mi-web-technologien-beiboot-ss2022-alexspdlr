@@ -1,91 +1,26 @@
-import { Physics } from '@react-three/cannon';
-import { PointerLockControls, Sky } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
-import { useRef, useState, useEffect } from 'react';
+import { useState } from 'react';
 import './App.scss';
 import './assets/styles/scss/abstracts/variables.scss';
-import { Ground } from './Ground';
-import { Player } from './Player';
-import { Painting } from './Painting';
-import { Timeline } from './Timeline';
-import Line from './Line';
-import * as THREE from 'three';
-import colors from './assets/styles/scss/abstracts/variables.scss';
-
-const groupByYear = (items) =>
-  items.reduce((groups, item) => {
-    const group = groups[item.sortingInfo.year] || [];
-    group.push(item);
-    groups[item.sortingInfo.year] = group;
-    return groups;
-  }, {});
-
-const calculateHeight = (item) => {
-  const split = item.dimensions.replace(/[\])}[{(]/g, ' ').split(' ');
-  const scalingFactor = 1 / 1.8;
-  const splitWithoutCM = split.filter(
-    (string) => string !== 'cm' && string !== ''
-  );
-
-  let size;
-  let sideMeasured;
-
-  for (const string of splitWithoutCM) {
-    const stringSlicedAtDash = string.split('-')[0];
-
-    if (!size) {
-      if (/\d/.test(stringSlicedAtDash)) {
-        size = parseFloat(stringSlicedAtDash.replace(/,/g, '.'));
-      }
-    } else {
-      sideMeasured = stringSlicedAtDash;
-
-      break;
-    }
-  }
-
-  switch (sideMeasured) {
-    case 'oben':
-      size =
-        (size / item.images.overall.images[0].sizes.medium.dimensions.width) *
-        item.images.overall.images[0].sizes.medium.dimensions.height;
-
-      break;
-    case 'Durchmesser':
-      const scaledDiameter = Math.sqrt(
-        Math.pow(
-          item.images.overall.images[0].sizes.medium.dimensions.width,
-          2
-        ) +
-          Math.pow(
-            item.images.overall.images[0].sizes.medium.dimensions.height,
-            2
-          )
-      );
-
-      const scalingFactor = size / scaledDiameter;
-
-      size =
-        item.images.overall.images[0].sizes.medium.dimensions.height *
-        scalingFactor;
-
-      break;
-    default:
-      break;
-  }
-
-  return (size / 100) * scalingFactor;
-};
+import PaintingInfoOverlay from './components/2D/PaintingInfoOverlay';
+import UI from './components/2D/UI';
+import UploadJSON from './components/2D/UploadJSON';
+import imageFromPainting from './utils/imageFromPainting';
+import removeTextInBrackets from './utils/removeTextInBrackets';
+import World from './components/3D/World';
 
 function App() {
   const [bestOfs, setBestOfs] = useState(null);
-  const [focusedPainting, setFocusedPainting] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [focusedPainting, setFocusedPainting] = useState(null);
   const stepSize = 4;
 
+  /**
+   *
+   * @returns Object containing all Infomation displayed in the Info Overlay
+   */
   const paintingInfo = () => {
     const painting = bestOfs.find(
-      (painting) => painting.images.overall.images[0].id === focusedPainting.id
+      (painting) => imageFromPainting(painting).id === focusedPainting.id
     );
 
     return {
@@ -97,6 +32,10 @@ function App() {
     };
   };
 
+  /**
+   * filters the input json by "isBestOf" & sets the bestOf state variable
+   * @param {*} event
+   */
   const onFileChange = (event) => {
     setLoading(true);
 
@@ -123,147 +62,29 @@ function App() {
     });
   };
 
-  const removeTextInBrackets = (text) => {
-    const roundBracketsRemoved = text.split('(')[0];
-    const squareBracketsRemoved = roundBracketsRemoved.split('[')[0];
-    return squareBracketsRemoved;
-  };
-
-  const UI = ({ children }) => {
-    return (
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          zIndex: 100,
-        }}
-      >
-        {children}
-      </div>
-    );
-  };
-
-  const Crosshair = () => {
-    return (
-      <div
-        style={{
-          height: '4px',
-          width: '4px',
-          backgroundColor: 'white',
-          borderRadius: '50%',
-          border: '0.5px solid black',
-          margin: 'auto',
-        }}
-      />
-    );
-  };
-
   return (
     <div className='App'>
-      {focusedPainting && (
-        <div className='overlay'>
-          <div className='h1'>{paintingInfo().title} </div>
-          <div className='h2'>
-            {paintingInfo().artist}
-            <br />
-            {paintingInfo().medium}
-            <br />
-            {paintingInfo().owner}
-          </div>
-        </div>
-      )}
       <div className='App-body'>
         {bestOfs ? (
           <>
-            <UI>
-              <Crosshair />
-            </UI>
-            <Canvas
-              shadows
-              pixelRatio={window.devicePixelRatio}
-              gl={{ alpha: false, antialias: true }}
-              camera={{ fov: 75 }}
-              style={{
-                width: '100vw',
-                height: '100vh',
-              }}
-              onCreated={({ gl, scene }) => {
-                scene.background = new THREE.Color(colors.medium);
-              }}
-            >
-              <Physics>
-                {Object.entries(groupByYear(bestOfs)).map(([year, group]) => (
-                  <>
-                    {group.map((item, groupIndex) => (
-                      <Painting
-                        stepSize={stepSize}
-                        year={year}
-                        indentation={groupIndex * 2}
-                        url={item.images.overall.images[0].sizes.medium.src}
-                        height={calculateHeight(item)}
-                        aspectRatio={
-                          item.images.overall.images[0].sizes.medium
-                            ? item.images.overall.images[0].sizes.medium
-                                .dimensions.width /
-                              item.images.overall.images[0].sizes.medium
-                                .dimensions.height
-                            : 1
-                        }
-                        id={item.images.overall.images[0].id}
-                        focusedPainting={focusedPainting}
-                        setFocusedPainting={setFocusedPainting}
-                      />
-                    ))}
-                    <Line
-                      start={[
-                        group.length * 2 - 1,
-                        0,
-                        -(year - 1501) * stepSize,
-                      ]}
-                      end={[-1, 0, -(year - 1501) * stepSize]}
-                      linewidth={0.5}
-                      color='#000000'
-                    />
-                  </>
-                ))}
-
-                <Timeline
-                  startDate={bestOfs[0].sortingInfo.year}
-                  endDate={bestOfs[bestOfs.length - 1].sortingInfo.year}
-                  stepSize={stepSize}
-                />
-
-                <Ground />
-                <Player />
-              </Physics>
-              <PointerLockControls />
-            </Canvas>
+            <UI />
+            {focusedPainting && (
+              <PaintingInfoOverlay
+                title={paintingInfo().title}
+                artist={paintingInfo().artist}
+                medium={paintingInfo().medium}
+                owner={paintingInfo().owner}
+              />
+            )}
+            <World
+              bestOfs={bestOfs}
+              stepSize={stepSize}
+              focusedPainting={focusedPainting}
+              setFocusedPainting={setFocusedPainting}
+            />
           </>
         ) : (
-          <>
-            {loading ? (
-              <p className='h1'>Bitte warten ...</p>
-            ) : (
-              <>
-                <p className='h1'>Lade die benötigte JSON Datei hoch.</p>
-
-                <div>
-                  <label class='uploadButton'>
-                    <input
-                      type='file'
-                      onChange={onFileChange}
-                      accept='application/JSON'
-                    />
-                    Datei auswählen
-                  </label>
-                </div>
-              </>
-            )}
-          </>
+          <UploadJSON loading={loading} onFileChange={onFileChange} />
         )}
       </div>
     </div>

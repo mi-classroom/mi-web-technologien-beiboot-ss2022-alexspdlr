@@ -1,10 +1,8 @@
-import { Physics } from '@react-three/cannon';
-import { PointerLockControls, Sky, Image, SpotLight } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
-import { useRef, useState, useEffect } from 'react';
+import { Image } from '@react-three/drei';
+import { useRef } from 'react';
 import { DoubleSide } from 'three';
+import colors from '../../assets/styles/scss/abstracts/variables.scss';
 import Line from './Line';
-import colors from './assets/styles/scss/abstracts/variables.scss';
 
 const useProxy = (text) => {
   const split = text.split('imageserver-2022/');
@@ -39,7 +37,7 @@ export const Painting = ({
           ref={mesh}
           onPointerOver={(event) => {
             if (
-              event.distance < 7 &&
+              event.distance < 14 &&
               (!focusedPainting || focusedPainting?.distance > event.distance)
             ) {
               setFocusedPainting({
