@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.scss';
 import './assets/styles/scss/abstracts/variables.scss';
 import PaintingInfoOverlay from './components/2D/PaintingInfoOverlay';
+import ControlsLegendOverlay from './components/2D/ControlsLegendOverlay';
 import UI from './components/2D/UI';
 import UploadJSON from './components/2D/UploadJSON';
 import imageFromPainting from './utils/imageFromPainting';
@@ -91,6 +92,7 @@ function App() {
                 isBestOf={paintingInfo().isBestOf}
               />
             )}
+            <ControlsLegendOverlay />
             <World
               bestOfs={bestOfs}
               stepSize={stepSize}
