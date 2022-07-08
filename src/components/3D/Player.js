@@ -62,6 +62,7 @@ export const Player = (props) => {
     speed.fromArray(velocity.current);
     api.velocity.set(direction.x, velocity.current[1], direction.z);
   });
+
   return (
     <>
       <mesh ref={ref} />

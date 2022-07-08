@@ -14,23 +14,54 @@ import imageFromPainting from '../../utils/imageFromPainting';
 import groupPaintingsByYear from '../../utils/groupPaintingsByYear';
 import calculatePaintingHeight from '../../utils/calculatePaintingHeight';
 import groupPaintingsBySelectedPainting from '../../utils/groupPaintingsBySelectedPainting';
+import groupTitleToIndex from '../../utils/groupTitleToIndex';
 
-function World({ bestOfs, stepSize, focusedPainting, setFocusedPainting }) {
+function World({
+  bestOfs,
+  allPaintings,
+  stepSize,
+  focusedPainting,
+  setFocusedPainting,
+}) {
   const [groupedItems, setGroupedItems] = useState(
     Object.entries(groupPaintingsByYear(bestOfs))
   );
-  const [itemSelected, setItemSelected] = useState(false);
+  const [isItemSelected, setIsItemSelected] = useState(false);
 
   const selectPainting = (inventoryNumber) => {
-    setItemSelected(true);
+    setIsItemSelected(true);
+    setFocusedPainting(null);
     setGroupedItems(
-      Object.entries(groupPaintingsBySelectedPainting(inventoryNumber, bestOfs))
+      Object.entries(
+        groupPaintingsBySelectedPainting(inventoryNumber, allPaintings)
+      )
     );
   };
 
+  const deselectPainting = () => {
+    setIsItemSelected(false);
+    setFocusedPainting(null);
+    setGroupedItems(Object.entries(groupPaintingsByYear(bestOfs)));
+  };
+
   useEffect(() => {
-    console.log('groupedItems: ', groupedItems);
-  }, [groupedItems]);
+    const handleKeyPress = (e) => {
+      if (e.key === 'Backspace') {
+        e.preventDefault();
+        if (isItemSelected) {
+          deselectPainting();
+        } else {
+          console.log('no item selected');
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isItemSelected]);
 
   return (
     <Canvas
@@ -47,7 +78,59 @@ function World({ bestOfs, stepSize, focusedPainting, setFocusedPainting }) {
       }}
     >
       <Physics>
-        {
+        {isItemSelected ? (
+          <>
+            {groupedItems.map(([groupTitle, group]) => (
+              <>
+                {group.map((painting, groupIndex) => (
+                  <Painting
+                    stepSize={stepSize}
+                    year={painting.sortingInfo.year}
+                    indentation={groupIndex * 2}
+                    url={imageFromPainting(painting).sizes.medium.src}
+                    height={calculatePaintingHeight(painting)}
+                    aspectRatio={
+                      imageFromPainting(painting).sizes.medium
+                        ? imageFromPainting(painting).sizes.medium.dimensions
+                            .width /
+                          imageFromPainting(painting).sizes.medium.dimensions
+                            .height
+                        : 1
+                    }
+                    id={imageFromPainting(painting).id}
+                    focusedPainting={focusedPainting}
+                    setFocusedPainting={setFocusedPainting}
+                    selectPainting={selectPainting}
+                    inventoryNumber={painting.inventoryNumber}
+                    isItemSelected={isItemSelected}
+                    groupTitle={groupTitle}
+                    zIndentation={
+                      (groupedItems[0][1][0].sortingInfo.year - 1501) * stepSize
+                    }
+                    isBestOf={painting.isBestOf}
+                  />
+                ))}
+                <Line
+                  start={[
+                    group.length * 2 - 1,
+                    0,
+                    -groupTitleToIndex(groupTitle) * stepSize -
+                      (groupedItems[0][1][0].sortingInfo.year - 1501) *
+                        stepSize,
+                  ]}
+                  end={[
+                    -1,
+                    0,
+                    -groupTitleToIndex(groupTitle) * stepSize -
+                      (groupedItems[0][1][0].sortingInfo.year - 1501) *
+                        stepSize,
+                  ]}
+                  linewidth={0.5}
+                />
+              </>
+            ))}
+          </>
+        ) : (
           <>
             {groupedItems.map(([year, group]) => (
               <>
@@ -71,6 +154,10 @@ function World({ bestOfs, stepSize, focusedPainting, setFocusedPainting }) {
                     setFocusedPainting={setFocusedPainting}
                     selectPainting={selectPainting}
                     inventoryNumber={painting.inventoryNumber}
+                    isItemSelected={isItemSelected}
+                    groupTitle={null}
+                    zIndentation={null}
+                    isBestOf={painting.isBestOf}
                   />
                 ))}
                 <Line
@@ -81,10 +168,15 @@ function World({ bestOfs, stepSize, focusedPainting, setFocusedPainting }) {
               </>
             ))}
           </>
-        }
+        )}
 
-        {itemSelected ? (
-          <Groupline stepSize={stepSize} />
+        {isItemSelected ? (
+          <Groupline
+            stepSize={stepSize}
+            zIndentation={
+              (groupedItems[0][1][0].sortingInfo.year - 1501) * stepSize
+            }
+          />
         ) : (
           <Timeline
             startDate={bestOfs[0].sortingInfo.year}
