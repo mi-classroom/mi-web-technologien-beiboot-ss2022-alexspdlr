@@ -5,17 +5,28 @@
 }
 
 .App-body {
-  background-color: $lightest;
+  background-color: $darker;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: $dark;
+  color: $lightest;
 }
 
 .App-link {
   color: $error;
+}
+
+.overlay {
+  z-index: 1;
+  position: absolute;
+  padding: $l;
+  top: 0;
+  margin: $m;
+  color: $darkest;
+  background-color: $lightest;
+  border-radius: $xs;
 }
 
 .tile {
@@ -36,44 +47,43 @@
 
 .previewContainer {
   width: $tile-s;
-  height: $tile-s; 
+  height: $tile-s;
   background-color: $darken;
-  margin-bottom: $s;  
+  margin-bottom: $s;
 }
 
 .previewImage {
-  object-fit: contain; 
+  object-fit: contain;
   width: $tile-s;
-  height: $tile-s; 
+  height: $tile-s;
 }
 
 .h1 {
-  font-size: $xl; 
+  font-size: $m;
   font-weight: $fw-bold;
 }
 
 .h2 {
-  font-size: $xl; 
+  font-size: $m;
   font-weight: $fw-regular;
 }
 
 .uploadButton {
   background-color: $accent;
+  color: $darker;
   display: inline-block;
   padding: $xs $s;
   cursor: pointer;
-  font-size: $m; 
+  font-size: $m;
   font-weight: $fw-semibold;
   &:hover {
     background-color: $accent-dark;
   }
 }
 
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
-
-
 
 @keyframes App-logo-spin {
   from {
