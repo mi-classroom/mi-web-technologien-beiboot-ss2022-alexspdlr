@@ -8,6 +8,7 @@ const groupPaintingsByYear = (items) =>
     const group = groups[item.sortingInfo.year] || [];
     group.push(item);
     groups[item.sortingInfo.year] = group;
+
     return groups;
   }, {});
 

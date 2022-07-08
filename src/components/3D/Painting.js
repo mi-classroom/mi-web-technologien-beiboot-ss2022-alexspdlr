@@ -19,6 +19,8 @@ export const Painting = ({
   id,
   focusedPainting,
   setFocusedPainting,
+  selectPainting,
+  inventoryNumber,
 }) => {
   // This reference will give us direct access to the mesh
   const mesh = useRef();
@@ -50,6 +52,9 @@ export const Painting = ({
             if (focusedPainting?.id === id) {
               setFocusedPainting(null);
             }
+          }}
+          onClick={(event) => {
+            selectPainting(inventoryNumber);
           }}
         >
           <boxBufferGeometry attach='geometry' args={[4, 1, 1]} />
