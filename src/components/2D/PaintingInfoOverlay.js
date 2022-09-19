@@ -1,4 +1,25 @@
+import { useEffect } from 'react';
+
 const PaintingInfoOverlay = ({ title, artist, medium, owner, isBestOf }) => {
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === 'm') {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1; // From 0 to 1
+        msg.pitch = 1;
+        msg.text = `Titel: ${title}, Künstler: ${artist}, Besitzer: ${owner}`;
+        msg.lang = 'de-DE';
+        speechSynthesis.speak(msg);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []);
+
   return (
     <div className='overlay'>
       <div className='h1'>{title} </div>

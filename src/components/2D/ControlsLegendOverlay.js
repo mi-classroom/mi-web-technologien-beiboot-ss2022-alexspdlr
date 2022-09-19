@@ -30,6 +30,12 @@ const ControlsLegendOverlay = () => {
         <b>
           <em> Backspace</em>
         </b>
+        <br />
+        <br />
+        Bildinformationen vorlesen: <br />
+        <b>
+          <em>M</em>
+        </b>
       </div>
     </div>
   );
