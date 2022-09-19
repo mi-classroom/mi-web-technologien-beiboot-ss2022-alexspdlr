@@ -32,7 +32,8 @@ export const Painting = ({
   // Set up state for the hovered and active state
   const depth = 0.03;
   const width = height * aspectRatio;
-  const passepartoutSize = width < 0.05 ? 0.05 : width * 0.3;
+  const passepartoutSize =
+    width < 0.05 ? 0.05 : width * 0.3 > 0.4 ? 0.4 : width * 0.3;
   const frameSize = width < 0.05 ? 0.01 : 0.025;
   const offsetY = 0.8;
   // Return view, these are regular three.js elements expressed in JSX
