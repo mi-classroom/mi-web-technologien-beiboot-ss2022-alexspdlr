@@ -7,7 +7,7 @@ import imageFromPainting from './imageFromPainting';
  */
 const calculatePaintingHeight = (item) => {
   const split = item.dimensions.replace(/[\])}[{(]/g, ' ').split(' ');
-  const scalingFactor = 1 / 1.8;
+  const scalingFactor = 1 / 1.5;
   const splitWithoutCM = split.filter(
     (string) => string !== 'cm' && string !== ''
   );

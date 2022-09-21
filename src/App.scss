@@ -29,6 +29,18 @@
   border-radius: $xs;
 }
 
+.overlay-legend {
+  z-index: 2;
+  position: absolute;
+  padding: $l;
+  top: 0;
+  left: 0;
+  margin: $m;
+  color: $lightest;
+  background-color: $darken-strong;
+  border-radius: $xs;
+}
+
 .tile {
   width: $tile-s;
   margin-top: $bfs * 6;
