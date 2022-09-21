@@ -1,4 +1,4 @@
-FROM node:18.2.0
+FROM --platform=linux/amd64 node:18.2.0 
 
 ARG REACT_APP_ENV
 ENV REACT_APP_ENV=${REACT_APP_ENV}
